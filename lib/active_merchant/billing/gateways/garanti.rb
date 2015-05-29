@@ -251,6 +251,16 @@ module ActiveMerchant #:nodoc:
         response[:message] == "Approved"
       end
 
+      def strip_invalid_xml_chars(xml)
+        begin
+          REXML::Document.new(xml)
+        rescue REXML::ParseException
+          xml = xml.gsub(/&(?!(?:[a-z]+|#[0-9]+|x[a-zA-Z0-9]+);)/, '&amp;')
+        end
+
+        xml
+      end
+
     end
   end
 end
